@@ -10,8 +10,10 @@ public class Goal : MonoBehaviour
     private PlayerMovement3D playerMovement;
     private MazeGenerator3D mazeGenerator;
     private Rigidbody playerRb;
+    private MinimapRenderer minimap;
 
     private Vector3 resetPosition = new Vector3(2f, 4.5f, 2f);
+    private Vector2Int goalCell;
 
     void Start()
     {
@@ -24,9 +26,32 @@ public class Goal : MonoBehaviour
         }
 
         mazeGenerator = FindObjectOfType<MazeGenerator3D>();
+        minimap = FindObjectOfType<MinimapRenderer>();
 
         if (goalSound == null)
             Debug.LogWarning("Goal sound is not assigned!");
+
+        if (mazeGenerator != null)
+        {
+            // Exit cell on your maze: (width - 2, depth - 2)
+            int exitX = mazeGenerator.width - 2;
+            int exitZ = mazeGenerator.depth - 2;
+            goalCell = new Vector2Int(exitX, exitZ);
+
+            // Set goal GameObject position to exit (scale by cellSize)
+            Vector3 goalWorldPos = new Vector3(exitX * mazeGenerator.cellSize, transform.position.y, exitZ * mazeGenerator.cellSize);
+            transform.position = goalWorldPos;
+
+            // Mark goal on minimap
+            if (minimap != null)
+            {
+                minimap.SetGoalPosition(exitX, exitZ);
+            }
+        }
+        else
+        {
+            Debug.LogWarning("MazeGenerator3D not found!");
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -35,15 +60,12 @@ public class Goal : MonoBehaviour
         {
             hasWon = true;
 
-            // Disable player movement
             if (playerMovement != null)
                 playerMovement.SetMovementEnabled(false);
 
-            // Play sound
             if (goalSound != null)
                 goalSound.Play();
 
-            // Start reset countdown
             StartCoroutine(CountdownAndRegenerate());
         }
     }
@@ -56,7 +78,7 @@ public class Goal : MonoBehaviour
         if (mazeGenerator != null)
             mazeGenerator.RegenerateMaze();
 
-        // Reset player position and physics
+        // Reset player position
         if (playerRb != null)
         {
             playerRb.MovePosition(resetPosition);
@@ -66,6 +88,20 @@ public class Goal : MonoBehaviour
 
         if (playerMovement != null)
             playerMovement.SetMovementEnabled(true);
+
+        // Update goal position after regeneration
+        if (mazeGenerator != null)
+        {
+            int exitX = mazeGenerator.width - 2;
+            int exitZ = mazeGenerator.depth - 2;
+            goalCell = new Vector2Int(exitX, exitZ);
+
+            Vector3 goalWorldPos = new Vector3(exitX * mazeGenerator.cellSize, transform.position.y, exitZ * mazeGenerator.cellSize);
+            transform.position = goalWorldPos;
+
+            if (minimap != null)
+                minimap.SetGoalPosition(exitX, exitZ);
+        }
 
         hasWon = false;
     }

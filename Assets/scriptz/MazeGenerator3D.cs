@@ -20,7 +20,7 @@ public class MazeGenerator3D : MonoBehaviour
     private GameObject mazeParent;
     private GameObject goalInstance;
 
-    private float cellSize = 4f; // Wider spacing
+    public float cellSize = 4f; // Made public to be accessible outside this class
 
     void Start()
     {

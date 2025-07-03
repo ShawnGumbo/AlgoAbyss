@@ -905,8 +905,9 @@ MonoBehaviour:
   depth: 40
   wallPrefab: {fileID: 2005537123}
   floorPrefab: {fileID: 1639932056}
-  goalPrefab: {fileID: 0}
+  goalPrefab: {fileID: 34436273}
   minimapUI: {fileID: 653458705}
+  cellSize: 4
 --- !u!1 &1639932056 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8374385260672122655, guid: 85fe81b0d1d2f84468f8bde8d35dad90, type: 3}
@@ -988,7 +989,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 822989048927569061, guid: 8aa6ea7f4e65e77479958cf883323991, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 41
+      value: 38
       objectReference: {fileID: 0}
     - target: {fileID: 822989048927569061, guid: 8aa6ea7f4e65e77479958cf883323991, type: 3}
       propertyPath: m_LocalPosition.y
@@ -996,7 +997,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 822989048927569061, guid: 8aa6ea7f4e65e77479958cf883323991, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 41
+      value: 38
       objectReference: {fileID: 0}
     - target: {fileID: 822989048927569061, guid: 8aa6ea7f4e65e77479958cf883323991, type: 3}
       propertyPath: m_LocalRotation.w
